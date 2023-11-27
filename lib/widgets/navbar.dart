@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bookhaven_mobile/screens/home.dart';
-import 'package:bookhaven_mobile/screens/top.dart';
 import 'package:bookhaven_mobile/screens/library.dart';
 import 'package:bookhaven_mobile/screens/booklist.dart';
-import 'package:bookhaven_mobile/screens/reviews.dart';
+import 'package:bookhaven_mobile/screens/reviews/reviews.dart';
 
 
 class NavigationMenu extends StatefulWidget {
@@ -15,7 +14,6 @@ class _NavigationMenuState extends State<NavigationMenu> {
   int index = 0;
   final screens = [
     const HomePage(),
-    const TopPage(),
     const LibraryPage(),
     const BookListPage(),
     const ReviewsPage(),
@@ -33,7 +31,6 @@ class _NavigationMenuState extends State<NavigationMenu> {
           ),
         ),
         child: NavigationBar(
-          height: 60,
           backgroundColor: Colors.white,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           selectedIndex: index,
@@ -42,27 +39,22 @@ class _NavigationMenuState extends State<NavigationMenu> {
             setState(() => this.index = index),
           destinations: const [
             NavigationDestination(
-              icon: Icon(Icons.home),
-              selectedIcon: Icon(Icons.home_filled),
+              icon: Icon(Icons.home_outlined),
+              selectedIcon: Icon(Icons.home),
               label: 'Home'
               ),
             NavigationDestination(
-              icon: Icon(Icons.recommend),
-              selectedIcon: Icon(Icons.recommend),
-              label: 'Top'
-              ),
-            NavigationDestination(
-              icon: Icon(Icons.library_books_rounded), 
-              selectedIcon: Icon(Icons.library_books_rounded),
+              icon: Icon(Icons.library_books_outlined), 
+              selectedIcon: Icon(Icons.library_books),
               label: 'Library'
             ),
             NavigationDestination(
-              icon: Icon(Icons.list), 
-              selectedIcon: Icon(Icons.list),
+              icon: Icon(Icons.book_outlined), 
+              selectedIcon: Icon(Icons.book),
               label: 'Booklist'
             ),
             NavigationDestination(
-              icon: Icon(Icons.reviews), 
+              icon: Icon(Icons.reviews_outlined), 
               selectedIcon: Icon(Icons.reviews),
               label: 'Reviews'
             )
