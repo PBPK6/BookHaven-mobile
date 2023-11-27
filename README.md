@@ -43,9 +43,7 @@ Admin:
 
 ## Integration Flow
 
-- Setup flutter
-- Setup Django
-- pbp_auth_django and http
+For the Mid-Semester Project, we developed BookHaven as a web application. Additionally, we implemented various endpoints to handle JSON data, essentially creating an API. This API will be utilized by our mobile application, which will send HTTP requests to the prepared endpoints. The goal is to seamlessly integrate BookHaven data from the web server into the mobile application.
 
 ## Meeting Minutes
 
