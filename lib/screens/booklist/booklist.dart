@@ -1,6 +1,7 @@
 import 'package:bookhaven_mobile/widgets/left_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:bookhaven_mobile/models/Book.dart';
 import 'package:bookhaven_mobile/screens/library/book_detail_page.dart'; // Import the detail page
@@ -14,16 +15,12 @@ class BooklistPage extends StatefulWidget {
 
 class _BooklistPageState extends State<BooklistPage> {
   Future<List<Book>> fetchBook() async {
-    var url = Uri.parse('http://127.0.0.1:8000/get_user_books_flutter');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    final request = context.watch<CookieRequest>();
+    final response =
+        await request.get('http://127.0.0.1:8000/get_user_books_flutter/');
 
     List<Book> listBook = [];
-    for (var d in data) {
+    for (var d in response) {
       if (d != null) {
         listBook.add(Book.fromJson(d));
       }
@@ -33,6 +30,8 @@ class _BooklistPageState extends State<BooklistPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Booklist'),
@@ -107,14 +106,31 @@ class _BooklistPageState extends State<BooklistPage> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(SnackBar(
-                                  content:
-                                      Text("feature not yet implemented :(")));
+                          onPressed: () async {
+                            final response = await request.postJson(
+                                "http://127.0.0.1:8000/del_from_list_fl/",
+                                jsonEncode(<String, dynamic>{
+                                  'isbn':
+                                      "${snapshot.data![index].fields.isbn}",
+                                }));
+                            if (response['status'] == 'success') {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Book removed successfully!"),
+                              ));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BooklistPage()));
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Something went wrong, please try again."),
+                              ));
+                            }
                           },
-                          child: Text('Add'),
+                          child: Text('Remove'),
                         ),
                       ],
                     ),

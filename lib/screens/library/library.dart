@@ -1,5 +1,7 @@
 import 'package:bookhaven_mobile/widgets/left_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bookhaven_mobile/models/Book.dart';
@@ -14,7 +16,7 @@ class LibraryPage extends StatefulWidget {
 
 class _LibraryPageState extends State<LibraryPage> {
   Future<List<Book>> fetchBook() async {
-    var url = Uri.parse('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/api/books');
+    var url = Uri.parse('http://127.0.0.1:8000/api/books');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -33,6 +35,8 @@ class _LibraryPageState extends State<LibraryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Library'),
@@ -107,12 +111,25 @@ class _LibraryPageState extends State<LibraryPage> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(SnackBar(
-                                  content:
-                                      Text("feature not yet implemented :(")));
+                          onPressed: () async {
+                            final response = await request.postJson(
+                                "http://127.0.0.1:8000/add_to_list_fl/",
+                                jsonEncode(<String, dynamic>{
+                                  'isbn':
+                                      "${snapshot.data![index].fields.isbn}",
+                                }));
+                            if (response['status'] == 'success') {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Book added successfully!"),
+                              ));
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Something went wrong, please try again."),
+                              ));
+                            }
                           },
                           child: Text('Add'),
                         ),
