@@ -40,7 +40,8 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-        body: Column(
+        body: SingleChildScrollView(child:
+          Column(
       children: [
         Container(
           decoration: const BoxDecoration(
@@ -59,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  "INVENTARIS",
+                  "Register",
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -70,8 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ],
           ),
         ),
-        Expanded(
-            child: Padding(
+            Padding(
           padding: const EdgeInsets.all(32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -90,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 obscureText: true,
               ),
-              const SizedBox(height: 24.0),
+              const SizedBox(height: 12.0),
               TextField(
                 controller: _password2Controller,
                 decoration: const InputDecoration(
@@ -105,32 +105,57 @@ class _RegisterPageState extends State<RegisterPage> {
                   String password1 = _password1Controller.text;
                   String password2 = _password2Controller.text;
 
-                  // Navigator.pop(context);
                   final response = await request.postJson(
                       "http://127.0.0.1:8000/auth/register/",
                       jsonEncode(<String, String>{
                         'username': username,
                         'password1': password1,
                         'password2': password2,
-                      }));
-                  print(response);
-                  if (response['status'] == true) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(
-                        SnackBar(
-                          content: Text('Register failed.'),
-                        ),
+                      })
+                    );
+                  if (response['status'] == 200) {
+                    String message = "Registration successful!";
+                      String uname = username;
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
-                  } else {
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(
-                        SnackBar(
-                          content: Text('Register failed.'),
-                        ),
-                      );
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(content: Text("$message Welcome, $uname.")),
+                        );
+                    } else {
+                    String errorMessage = "";
+
+                    var flag = false;
+                    for (var value in response.values) {
+                      String message = value;
+                      if (message == "This field is required.") {
+                        if (!flag) {
+                          message = "Please fill in each field.";
+                        } else {
+                          continue;
+                        }
+                        flag = true;
+                      }
+                      errorMessage += "$message\n";
+                    }
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Registration Failed'),
+                        content: Text(errorMessage),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -162,8 +187,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ],
           ),
-        )),
+        ),
       ],
-    ));
+    )));
   }
 }
