@@ -28,6 +28,10 @@ class _BooklistPageState extends State<BooklistPage> {
     return listBook;
   }
 
+  void _refreshList() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -108,20 +112,19 @@ class _BooklistPageState extends State<BooklistPage> {
                         ElevatedButton(
                           onPressed: () async {
                             final response = await request.postJson(
-                                "http://127.0.0.1:8000/del_from_list_fl/",
-                                jsonEncode(<String, dynamic>{
-                                  'isbn':
-                                      "${snapshot.data![index].fields.isbn}",
-                                }));
+                              "http://127.0.0.1:8000/del_from_list_fl/",
+                              jsonEncode(<String, dynamic>{
+                                'isbn': "${snapshot.data![index].fields.isbn}",
+                              }),
+                            );
                             if (response['status'] == 'success') {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text("Book removed successfully!"),
                               ));
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BooklistPage()));
+
+                              // Refresh the list after successful deletion
+                              _refreshList();
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
