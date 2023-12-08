@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bookhaven_mobile/screens/login.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:bookhaven_mobile/screens/search/searchbook.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -47,6 +48,19 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Edit Profile'),
             onTap: () {},
+          ),
+          ListTile(
+            title: const Text('Search Book'),
+            onTap: () {
+              // Navigate to SearchBook screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPage(), // Import and use your SearchBook widget here
+                ),
+              );
+            },
           ),
           ListTile(
             title: const Text('Logout'),
