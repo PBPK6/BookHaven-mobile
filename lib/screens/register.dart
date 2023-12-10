@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bookhaven_mobile/screens/login.dart';
 import 'package:bookhaven_mobile/main.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +33,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _password1Controller = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
 
@@ -50,9 +51,9 @@ class _RegisterPageState extends State<RegisterPage> {
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
             ),
-            color: Colors.cyan,
+            color: Colors.amber,
           ),
-          height: MediaQuery.of(context).size.height / 2,
+          height: MediaQuery.of(context).size.height / 3,
           width: MediaQuery.of(context).size.width,
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -60,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  "INVENTARIS",
+                  "Book Haven Mobile",
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -83,6 +84,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   labelText: 'Username',
                 ),
               ),
+              TextField(
+                controller: _fullnameController,
+                decoration: const InputDecoration(
+                  labelText: 'Full Name',
+                ),
+              ),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                ),
+              ),
               const SizedBox(height: 12.0),
               TextField(
                 controller: _password1Controller,
@@ -103,6 +116,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ElevatedButton(
                 onPressed: () async {
                   String username = _usernameController.text;
+                  String fullname = _usernameController.text;
+                  String email = _usernameController.text;
                   String password1 = _password1Controller.text;
                   String password2 = _password2Controller.text;
 
@@ -111,6 +126,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       "http://127.0.0.1:8000/auth/register/",
                       jsonEncode(<String, String>{
                         'username': username,
+                        'fullname': fullname,
+                        'email': email,
                         'password1': password1,
                         'password2': password2,
                       }));
@@ -135,13 +152,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
+                  backgroundColor: Colors.orange,
                   minimumSize: const Size(100, 50),
                 ),
                 child: const Text(
                   'Register',
                   style: TextStyle(
                     fontSize: 18,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -157,7 +175,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   'Already have an account? Login here.',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.grey,
+                    color: Colors.white,
                   ),
                 ),
               ),
