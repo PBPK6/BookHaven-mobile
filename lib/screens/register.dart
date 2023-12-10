@@ -138,7 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
                         SnackBar(
-                          content: Text('Register failed.'),
+                          content: Text('Register succesful.'),
                         ),
                       );
                   } else {

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:bookhaven_mobile/screens/search/searchbook.dart';
 import 'package:bookhaven_mobile/screens/editprofile.dart';
+import 'package:bookhaven_mobile/widgets/navbar.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -43,8 +44,16 @@ class LeftDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: const Text('Profile'),
-            onTap: () {},
+            title: const Text('Home'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      NavigationMenu(), // Import and use your SearchBook widget here
+                ),
+              );
+            },
           ),
           ListTile(
             title: const Text('Edit Profile'),
