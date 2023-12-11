@@ -25,7 +25,7 @@ class BookDetailPage extends StatelessWidget {
                   tag: "book-${book.fields.isbn}",
                   child: Image.network(
                     book.fields.imageL,
-                    height: 700, // Increase the height as needed
+                    height: 600, // Increase the height as needed
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),

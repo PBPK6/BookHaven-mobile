@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bookhaven_mobile/models/Book.dart';
-import 'package:bookhaven_mobile/screens/library/book_detail_page.dart'; // Import the detail page
+import 'package:bookhaven_mobile/screens/library/book_detail_page.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({Key? key}) : super(key: key);
@@ -33,6 +33,18 @@ class _LibraryPageState extends State<LibraryPage> {
     return listBook;
   }
 
+  Future<bool> isAdmin() async {
+    final request = context.watch<CookieRequest>();
+    final response = await request.get('http://127.0.0.1:8000/check_su/');
+
+    print(response);
+    return response['is_superuser'];
+  }
+
+  void _refreshList() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -43,15 +55,15 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
-        future: fetchBook(),
-        builder: (context, AsyncSnapshot snapshot) {
+        future: Future.wait([fetchBook(), isAdmin()]),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Error: ${snapshot.error}'),
             );
-          } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+          } else if (!snapshot.hasData || snapshot.data![0].isEmpty) {
             return const Center(
               child: Text(
                 "No book data available.",
@@ -59,15 +71,18 @@ class _LibraryPageState extends State<LibraryPage> {
               ),
             );
           } else {
+            List<Book> books = snapshot.data![0];
+            bool isAdmin = snapshot.data![1];
+
             return ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: books.length,
               itemBuilder: (_, index) => InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookDetailPage(
-                        book: snapshot.data![index],
+                        book: books[index],
                       ),
                     ),
                   );
@@ -83,9 +98,9 @@ class _LibraryPageState extends State<LibraryPage> {
                     child: Row(
                       children: [
                         Hero(
-                          tag: "book-${snapshot.data![index].fields.isbn}",
+                          tag: "book-${books[index].fields.isbn}",
                           child: Image.network(
-                            "${snapshot.data![index].fields.imageL}",
+                            "${books[index].fields.imageL}",
                             width: 80,
                             height: 120,
                             fit: BoxFit.cover,
@@ -97,16 +112,16 @@ class _LibraryPageState extends State<LibraryPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${snapshot.data![index].fields.title}",
+                                "${books[index].fields.title}",
                                 style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("${snapshot.data![index].fields.author}"),
+                              Text("${books[index].fields.author}"),
                               const SizedBox(height: 10),
-                              Text("${snapshot.data![index].fields.year}")
+                              Text("${books[index].fields.year}")
                             ],
                           ),
                         ),
@@ -115,8 +130,7 @@ class _LibraryPageState extends State<LibraryPage> {
                             final response = await request.postJson(
                                 "http://127.0.0.1:8000/add_to_list_fl/",
                                 jsonEncode(<String, dynamic>{
-                                  'isbn':
-                                      "${snapshot.data![index].fields.isbn}",
+                                  'isbn': "${books[index].fields.isbn}",
                                 }));
                             if (response['status'] == 'success') {
                               ScaffoldMessenger.of(context)
@@ -133,6 +147,33 @@ class _LibraryPageState extends State<LibraryPage> {
                           },
                           child: Text('Add'),
                         ),
+                        if (isAdmin)
+                          ElevatedButton(
+                            onPressed: () async {
+                              final response = await request.postJson(
+                                "http://127.0.0.1:8000/del_from_library_fl/",
+                                jsonEncode(<String, dynamic>{
+                                  'isbn': "${books[index].fields.isbn}",
+                                }),
+                              );
+                              if (response['status'] == 'success') {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text("Book removed successfully!"),
+                                ));
+
+                                // Refresh the list after successful deletion
+                                _refreshList();
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                      "Something went wrong, please try again."),
+                                ));
+                              }
+                            },
+                            child: Text('Remove'),
+                          ),
                       ],
                     ),
                   ),
