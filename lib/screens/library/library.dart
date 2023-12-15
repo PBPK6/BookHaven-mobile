@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'dart:html' as html;
 import 'dart:convert';
 import 'package:bookhaven_mobile/models/Book.dart';
 import 'package:bookhaven_mobile/screens/library/book_detail_page.dart';
@@ -125,55 +126,72 @@ class _LibraryPageState extends State<LibraryPage> {
                             ],
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            final response = await request.postJson(
-                                "http://127.0.0.1:8000/add_to_list_fl/",
-                                jsonEncode(<String, dynamic>{
-                                  'isbn': "${books[index].fields.isbn}",
-                                }));
-                            if (response['status'] == 'success') {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("Book added successfully!"),
-                              ));
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text(
-                                    "Something went wrong, please try again."),
-                              ));
-                            }
-                          },
-                          child: Text('Add'),
-                        ),
-                        if (isAdmin)
-                          ElevatedButton(
-                            onPressed: () async {
-                              final response = await request.postJson(
-                                "http://127.0.0.1:8000/del_from_library_fl/",
-                                jsonEncode(<String, dynamic>{
-                                  'isbn': "${books[index].fields.isbn}",
-                                }),
-                              );
-                              if (response['status'] == 'success') {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text("Book removed successfully!"),
-                                ));
+                        const SizedBox(width: 16),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final response = await request.postJson(
+                                      "http://127.0.0.1:8000/add_to_list_fl/",
+                                      jsonEncode(<String, dynamic>{
+                                        'isbn': "${books[index].fields.isbn}",
+                                      }));
+                                  if (response['status'] == 'success') {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text("Book added successfully!"),
+                                    ));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          "Something went wrong, please try again."),
+                                    ));
+                                  }
+                                },
+                                child: Text('Add'),
+                              ),
+                              if (isAdmin)
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final response = await request.postJson(
+                                      "http://127.0.0.1:8000/del_from_library_fl/",
+                                      jsonEncode(<String, dynamic>{
+                                        'isbn': "${books[index].fields.isbn}",
+                                      }),
+                                    );
+                                    if (response['status'] == 'success') {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content:
+                                            Text("Book removed successfully!"),
+                                      ));
 
-                                // Refresh the list after successful deletion
-                                _refreshList();
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text(
-                                      "Something went wrong, please try again."),
-                                ));
-                              }
-                            },
-                            child: Text('Remove'),
+                                      // Refresh the list after successful deletion
+                                      _refreshList();
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text(
+                                            "Something went wrong, please try again."),
+                                      ));
+                                    }
+                                  },
+                                  child: Text('Remove'),
+                                ),
+                              if (isAdmin)
+                                ElevatedButton(
+                                  onPressed: () {
+                                    _openLinkInBrowser(
+                                        'http://127.0.0.1:8000/admin/main/book/');
+                                  },
+                                  child: Text('Edit'),
+                                ),
+                            ],
                           ),
+                        ),
                       ],
                     ),
                   ),
@@ -184,5 +202,9 @@ class _LibraryPageState extends State<LibraryPage> {
         },
       ),
     );
+  }
+
+  void _openLinkInBrowser(String url) {
+    html.window.open(url, 'New Tab');
   }
 }
