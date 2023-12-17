@@ -116,8 +116,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ElevatedButton(
                 onPressed: () async {
                   String username = _usernameController.text;
-                  String fullname = _usernameController.text;
-                  String email = _usernameController.text;
+                  String fullname = _fullnameController.text;
+                  String email = _emailController.text;
                   String password1 = _password1Controller.text;
                   String password2 = _password2Controller.text;
 

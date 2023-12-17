@@ -22,7 +22,7 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Hi Clay',
+                  'Welcome to Bookhaven!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,

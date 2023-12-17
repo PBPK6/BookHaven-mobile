@@ -15,8 +15,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late List<Book> allBooks;
-  late List<Book> displayedBooks;
+  late List<Book> allBooks = [];
+  late List<Book> displayedBooks = [];
 
   @override
   void initState() {
@@ -73,6 +73,7 @@ class _SearchPageState extends State<SearchPage> {
               decoration: InputDecoration(
                 labelText: 'Search by book title',
                 prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
               ),
             ),
           ),

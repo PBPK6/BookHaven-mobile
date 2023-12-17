@@ -70,22 +70,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _newUsernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
+            Padding(
+              padding: EdgeInsets.only(bottom: 12.0),
+              child: TextField(
+                controller: _newUsernameController,
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-            TextField(
-              controller: _newEmailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
+            Padding(
+              padding: EdgeInsets.only(bottom: 12.0),
+              child: TextField(
+                controller: _newEmailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-            TextField(
-              controller: _newFullnameController,
-              decoration: InputDecoration(
-                labelText: 'First Name',
+            Padding(
+              padding: EdgeInsets.only(bottom: 12.0),
+              child: TextField(
+                controller: _newFullnameController,
+                decoration: InputDecoration(
+                  labelText: 'First Name',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
             SizedBox(height: 24.0),

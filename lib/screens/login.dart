@@ -20,7 +20,43 @@ class LoginApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: const AnimatedSplashScreen(),
+    );
+  }
+}
+
+class AnimatedSplashScreen extends StatefulWidget {
+  const AnimatedSplashScreen({Key? key}) : super(key: key);
+
+  @override
+  _AnimatedSplashScreenState createState() => _AnimatedSplashScreenState();
+}
+
+class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> {
+  double opacityLevel = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Trigger the animation after a short delay
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        opacityLevel = 1.0;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AnimatedOpacity(
+        duration: Duration(milliseconds: 1000),
+        opacity: opacityLevel,
+        child: Container(
+          color: Colors.blue, // Blue background
+          child: const LoginPage(),
+        ),
+      ),
     );
   }
 }
@@ -39,116 +75,110 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    double maxWidth = MediaQuery.of(context).size.width - 50.0;
+    maxWidth = maxWidth > 650.0 ? 650.0 : maxWidth;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome to BookHaven'),
-        backgroundColor: Color(0xFF0174BE),
-        foregroundColor: Colors.white,
-        centerTitle: true,
-      ),
       body: Container(
         color: Color(0xFFFFC436),
         child: Center(
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 600),
-            child: Container(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            child: Card(
               color: Color(0xFFFFF0CE),
-              child: Card(
-                margin: const EdgeInsets.all(16.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Image(
-                        image: NetworkImage(
-                            'https://plus.unsplash.com/premium_photo-1681825268400-c561bd47d586?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+              margin: const EdgeInsets.all(16.0),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Image(
+                      image: NetworkImage(
+                          'https://plus.unsplash.com/premium_photo-1681825268400-c561bd47d586?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                    ),
+                    TextField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Username',
                       ),
-                      TextField(
-                        controller: _usernameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                        ),
+                    ),
+                    const SizedBox(height: 12.0),
+                    TextField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
                       ),
-                      const SizedBox(height: 12.0),
-                      TextField(
-                        controller: _passwordController,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                        ),
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 24.0),
-                      ElevatedButton(
-                        onPressed: () async {
-                          String username = _usernameController.text;
-                          String password = _passwordController.text;
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 24.0),
+                    ElevatedButton(
+                      onPressed: () async {
+                        String username = _usernameController.text;
+                        String password = _passwordController.text;
 
-                          final response = await request.login(
-                            "http://127.0.0.1:8000/auth/login/",
-                            {
-                              'username': username,
-                              'password': password,
-                            },
-                          );
+                        final response = await request.login(
+                          "http://127.0.0.1:8000/auth/login/",
+                          {
+                            'username': username,
+                            'password': password,
+                          },
+                        );
 
-                          if (request.loggedIn) {
-                            String message = response['message'];
-                            String uname = response['username'];
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const NavigationMenu(),
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(
-                                SnackBar(
-                                  content: Text("$message Welcome, $uname."),
-                                ),
-                              );
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Login Failed'),
-                                content: Text(response['message']),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text('Login'),
-                      ),
-                      const SizedBox(height: 12.0),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
+                        if (request.loggedIn) {
+                          String message = response['message'];
+                          String uname = response['username'];
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const RegisterPage(),
+                              builder: (context) => const NavigationMenu(),
                             ),
                           );
-                        },
-                        child: const Text(
-                          'No account? Register here!',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                content: Text("$message Welcome, $uname."),
+                              ),
+                            );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Login Failed'),
+                              content: Text(response['message']),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Login'),
+                    ),
+                    const SizedBox(height: 12.0),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
                           ),
+                        );
+                      },
+                      child: const Text(
+                        'No account? Register here!',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
