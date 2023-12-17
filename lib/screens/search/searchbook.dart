@@ -64,6 +64,7 @@ class _SearchPageState extends State<SearchPage> {
         title: const Text('Search For Books'),
       ),
       drawer: const LeftDrawer(),
+      backgroundColor: Color(0xFFFFF0CE),
       body: Column(
         children: [
           Padding(

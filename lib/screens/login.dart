@@ -79,108 +79,130 @@ class _LoginPageState extends State<LoginPage> {
     maxWidth = maxWidth > 650.0 ? 650.0 : maxWidth;
     return Scaffold(
       body: Container(
-        color: Color(0xFFFFC436),
+        color: Color(0xFFFFF0CE),
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth),
-            child: Card(
-              color: Color(0xFFFFF0CE),
-              margin: const EdgeInsets.all(16.0),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Image(
-                      image: NetworkImage(
-                          'https://plus.unsplash.com/premium_photo-1681825268400-c561bd47d586?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                    ),
-                    TextField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Username',
-                      ),
-                    ),
-                    const SizedBox(height: 12.0),
-                    TextField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                      ),
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 24.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        String username = _usernameController.text;
-                        String password = _passwordController.text;
-
-                        final response = await request.login(
-                          "http://127.0.0.1:8000/auth/login/",
-                          {
-                            'username': username,
-                            'password': password,
-                          },
-                        );
-
-                        if (request.loggedIn) {
-                          String message = response['message'];
-                          String uname = response['username'];
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const NavigationMenu(),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(
-                              SnackBar(
-                                content: Text("$message Welcome, $uname."),
-                              ),
-                            );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Login Failed'),
-                              content: Text(response['message']),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Login'),
-                    ),
-                    const SizedBox(height: 12.0),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterPage(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'No account? Register here!',
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Card(
+                  color: Color(0xFF0174BE),
+                  margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: Text(
+                        'Bookhaven',
                         style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
+                          fontSize: 24,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Card(
+                  color: Color(0xFFFFC436),
+                  margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextField(
+                          controller: _usernameController,
+                          decoration: const InputDecoration(
+                            labelText: 'Username',
+                          ),
+                        ),
+                        const SizedBox(height: 12.0),
+                        TextField(
+                          controller: _passwordController,
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                          ),
+                          obscureText: true,
+                        ),
+                        const SizedBox(height: 24.0),
+                        ElevatedButton(
+                          onPressed: () async {
+                            // ... (unchanged)
+                            String username = _usernameController.text;
+                            String password = _passwordController.text;
+
+                            final response = await request.login(
+                              "http://127.0.0.1:8000/auth/login/",
+                              {
+                                'username': username,
+                                'password': password,
+                              },
+                            );
+
+                            if (request.loggedIn) {
+                              String message = response['message'];
+                              String uname = response['username'];
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const NavigationMenu(),
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(
+                                  SnackBar(
+                                    content: Text("$message Welcome, $uname."),
+                                  ),
+                                );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Login Failed'),
+                                  content: Text(response['message']),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text('Login'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(
+                                0xFF0174BE), // Set the background color to navy
+                          ),
+                        ),
+                        const SizedBox(height: 12.0),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterPage(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'No account? Register here!',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF0174BE),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

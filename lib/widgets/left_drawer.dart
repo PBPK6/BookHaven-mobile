@@ -17,7 +17,7 @@ class LeftDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.indigo,
+              color: Color(0xFF0174BE),
             ),
             child: Column(
               children: [

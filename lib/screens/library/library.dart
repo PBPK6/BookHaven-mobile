@@ -55,6 +55,7 @@ class _LibraryPageState extends State<LibraryPage> {
         title: const Text('Library'),
       ),
       drawer: const LeftDrawer(),
+      backgroundColor: Color(0xFFFFF0CE),
       body: FutureBuilder(
         future: Future.wait([fetchBook(), isAdmin()]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -153,6 +154,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                 },
                                 child: Text('Add'),
                               ),
+                              const SizedBox(height: 4.0),
                               if (isAdmin)
                                 ElevatedButton(
                                   onPressed: () async {
@@ -181,6 +183,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                   },
                                   child: Text('Remove'),
                                 ),
+                              const SizedBox(height: 4.0),
                               if (isAdmin)
                                 ElevatedButton(
                                   onPressed: () {

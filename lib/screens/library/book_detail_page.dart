@@ -10,6 +10,7 @@ class BookDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double cardWidth = screenWidth - 40;
+    double maxWidth = cardWidth < 600.0 ? cardWidth : 600.0;
     return Scaffold(
       appBar: AppBar(
         title: Text('${book.fields.title}'),
@@ -21,7 +22,7 @@ class BookDetailPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: cardWidth),
+              constraints: BoxConstraints(maxWidth: maxWidth),
               // Set the maximum width
               child: Card(
                 color: Color(0xFFFFF0CE),

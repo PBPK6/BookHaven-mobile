@@ -51,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
             ),
-            color: Colors.amber,
+            color: Color(0xFFFFC436),
           ),
           height: MediaQuery.of(context).size.height / 3,
           width: MediaQuery.of(context).size.width,

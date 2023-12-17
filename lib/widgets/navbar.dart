@@ -25,13 +25,13 @@ class _NavigationMenuState extends State<NavigationMenu> {
       body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-          indicatorColor: Colors.blue.shade100,
+          indicatorColor: Color(0xFF0174BE),
           labelTextStyle: MaterialStateProperty.all(
             const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ),
         child: NavigationBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xF0FFC436),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           selectedIndex: index,
           animationDuration: const Duration(milliseconds: 500),

@@ -41,6 +41,7 @@ class _BooklistPageState extends State<BooklistPage> {
         title: const Text('Booklist'),
       ),
       drawer: const LeftDrawer(),
+      backgroundColor: Color(0xFFFFF0CE),
       body: FutureBuilder(
         future: fetchBook(),
         builder: (context, AsyncSnapshot snapshot) {
