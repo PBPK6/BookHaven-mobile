@@ -14,10 +14,18 @@ class BooklistPage extends StatefulWidget {
 }
 
 class _BooklistPageState extends State<BooklistPage> {
+  late Future<List<Book>> _futureBookList;
+  late List<Book> _bookList = [];
+
+  @override
+  void initState() {
+    _futureBookList = fetchBook();
+    super.initState();
+  }
+
   Future<List<Book>> fetchBook() async {
-    final request = context.watch<CookieRequest>();
-    final response =
-        await request.get('http://127.0.0.1:8000/get_user_books_flutter/');
+    final request = context.read<CookieRequest>();
+    final response = await request.get('http://127.0.0.1:8000/get_user_books_flutter/');
 
     List<Book> listBook = [];
     for (var d in response) {
@@ -25,11 +33,21 @@ class _BooklistPageState extends State<BooklistPage> {
         listBook.add(Book.fromJson(d));
       }
     }
+    _bookList = listBook; // Store the original book list
     return listBook;
   }
 
   void _refreshList() {
-    setState(() {});
+    setState(() {
+      _futureBookList = fetchBook(); // Refresh the book list
+    });
+  }
+
+  void _filterBooks(String query) {
+    setState(() {
+      _bookList = _bookList.where((book) =>
+          book.fields.title.toLowerCase().contains(query.toLowerCase())).toList();
+    });
   }
 
   @override
@@ -39,11 +57,25 @@ class _BooklistPageState extends State<BooklistPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Booklist'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final String? result = await showSearch<String>(
+                context: context,
+                delegate: BookSearch(_bookList),
+              );
+              if (result != null && result.isNotEmpty) {
+                _filterBooks(result);
+              }
+            },
+            icon: Icon(Icons.search),
+          ),
+        ],
       ),
       drawer: const LeftDrawer(),
       backgroundColor: Color(0xFFFFF0CE),
       body: FutureBuilder(
-        future: fetchBook(),
+        future: _futureBookList,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -51,7 +83,7 @@ class _BooklistPageState extends State<BooklistPage> {
             return Center(
               child: Text('Error: ${snapshot.error}'),
             );
-          } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+          } else if (!snapshot.hasData || _bookList.isEmpty) {
             return const Center(
               child: Text(
                 "No book data available.",
@@ -60,14 +92,14 @@ class _BooklistPageState extends State<BooklistPage> {
             );
           } else {
             return ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: _bookList.length,
               itemBuilder: (_, index) => InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookDetailPage(
-                        book: snapshot.data![index],
+                        book: _bookList[index],
                       ),
                     ),
                   );
@@ -140,6 +172,7 @@ class _BooklistPageState extends State<BooklistPage> {
                     ),
                   ),
                 ),
+
               ),
             );
           }
@@ -147,4 +180,129 @@ class _BooklistPageState extends State<BooklistPage> {
       ),
     );
   }
+}
+
+
+class BookSearch extends SearchDelegate<String> {
+  final List<Book> bookList;
+
+  BookSearch(this.bookList);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {
+          query = '';
+        },
+        icon: Icon(Icons.clear),
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        close(context, '');
+      },
+      icon: Icon(Icons.arrow_back),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final searchResults = query.isEmpty
+        ? []
+        : bookList.where((book) =>
+            book.fields.title.toLowerCase().contains(query.toLowerCase())).toList();
+
+    return _buildBookCards(searchResults, context);
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final suggestionList = query.isEmpty
+        ? []
+        : bookList.where((book) =>
+            book.fields.title.toLowerCase().contains(query.toLowerCase())).toList();
+
+    return _buildBookCards(suggestionList, context);
+  }
+
+Widget _buildBookCards(List<dynamic> books, BuildContext context) {
+  if (books.isEmpty) {
+    return Center(
+      child: Text(
+        "No results found.",
+        style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+      ),
+    );
+  }
+
+  return ListView.builder(
+    itemCount: books.length,
+    itemBuilder: (context, index) {
+      final book = books[index];
+      return InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookDetailPage(
+                book: book,
+              ),
+            ),
+          );
+        },
+        child: Card(
+          elevation: 5,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Hero(
+                  tag: "book-${book.fields.isbn}",
+                  child: Image.network(
+                    "${book.fields.imageL}",
+                    width: 80,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${book.fields.title}",
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        "${book.fields.author}",
+                      ),
+                      const SizedBox(height: 5), 
+                      Text(
+                        "${book.fields.year}",
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
 }
