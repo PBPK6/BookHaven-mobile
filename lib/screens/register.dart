@@ -176,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   'Already have an account? Login here.',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white,
+                    color: Colors.blue,
                   ),
                 ),
               ),
