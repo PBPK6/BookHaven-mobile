@@ -32,7 +32,7 @@ class LeftDrawer extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
-                  'User Profile',
+                  'Reading Broadens Our Horizons',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,

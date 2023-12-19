@@ -31,138 +31,141 @@ class _ReviewsPageState extends State<ReviewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
+      backgroundColor: Color(0xFFFFF0CE),
+      appBar: AppBar(
         title: const Text('Reviews'),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
       ),
       drawer: const LeftDrawer(),
       floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-              FloatingActionButton(
-                heroTag: 1,
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                              Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child:
-                                      IconButton(
-                                        icon: const Icon(Icons.close),
-                                        onPressed: () {
-                                          Navigator.of(context).pop(); // Navigate back when the button is pressed
-                                        },
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                      ActionChip(
-                                        onPressed: () async{
-                                          
-                                        },
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: 1,
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04),
+                            Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Navigate back when the button is pressed
+                                    },
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ActionChip(
+                                      onPressed: () async {},
                                       avatar: const Icon(Icons.sort),
                                       label: const Text('Sort'),
                                     ),
                                     const SizedBox(width: 10),
                                     ActionChip(
-                                        onPressed: () async {
-                                          
-                                        },
+                                      onPressed: () async {},
                                       avatar: const Icon(Icons.filter),
                                       label: const Text('Filter'),
                                     ),
-                                    ],
-                                    ),
-                                ],
-                              ),
-                              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                            ],
-                          )
-                        ),
-                      );
-                    },
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04),
+                          ],
+                        )),
                   );
-                  }, 
-                backgroundColor: Colors.indigo,
-                foregroundColor: Colors.white,
-                child: Icon(Icons.settings),
-                ),
-                const SizedBox(height: 10),
-            FloatingActionButton(
-                heroTag: 2,
-          backgroundColor: Colors.indigo,
-          foregroundColor: Colors.white,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (BuildContext context) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                        Stack(
+                },
+              );
+            },
+            backgroundColor: Colors.indigo,
+            foregroundColor: Colors.white,
+            child: Icon(Icons.settings),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: 2,
+            backgroundColor: Colors.indigo,
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.add),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child:
-                                IconButton(
-                                  icon: const Icon(Icons.close),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(); // Navigate back when the button is pressed
-                                  },
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04),
+                            Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Navigate back when the button is pressed
+                                    },
+                                  ),
                                 ),
+                                const Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Write Review',
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04),
+                            Expanded(
+                              child: ReviewFormPage(
+                                onReviewSubmitted: refreshItems,
                               ),
-                            const Align(
-                              alignment: Alignment.center,
-                              child:
-                                Text(
-                                  'Write Review',
-                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                ),
                             )
                           ],
-                        ),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                        Expanded(
-                          child:
-                        ReviewFormPage(
-                          onReviewSubmitted: refreshItems,
-                        ),
-                        )
-                      ],
-                    )
-                  ),
-                );
-              },
-            );
-          },
-            )
+                        )),
+                  );
+                },
+              );
+            },
+          )
         ],
-        ),
+      ),
       body: FutureBuilder(
         future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -182,94 +185,116 @@ class _ReviewsPageState extends State<ReviewsPage> {
             } else {
               return Container(
                 padding: const EdgeInsets.all(10),
-                child:
-              ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (_, index) => AnimatedContainer(
-                    duration: const Duration(milliseconds: 500),
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.indigo,
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child:
-                      InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap:() {
-                        Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ReviewDetailAdminPage(review: snapshot.data![index], onSubmittedReview: refreshItems),
-                              ),
-                            );
-                      },
-                      onLongPress: () {showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (BuildContext context) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                      Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child:
-                              IconButton(
-                                icon: const Icon(Icons.arrow_back),
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Navigate back when the button is pressed
+                child: ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (_, index) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 500),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blue,
+                        ),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ReviewDetailAdminPage(
+                                              review: snapshot.data![index],
+                                              onSubmittedReview: refreshItems),
+                                    ),
+                                  );
                                 },
-                              ),
-                            ),
-                          const Align(
-                            alignment: Alignment.center,
-                            child:
-                              Text(
-                                'Edit Review',
-                                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                      Expanded(
-                        child:
-                          ReviewEditFormPage(
-                            review: snapshot.data![index], 
-                            onSubmittedReview: refreshItems
-                          )
-                      )
-                    ],
-                  )
-                ),
-              );
-            },
-          );},
-                      child: ListTile( // 
-                      contentPadding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-                      textColor: Colors.white,
-                      trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-                      title: Text(
-                        "${snapshot.data![index].fields.book}"),
-                        subtitle: Text("${snapshot.data![index].fields.rate}/10⭐\n"
-                        "${snapshot.data![index].fields.review != null && snapshot.data![index].fields.review.isNotEmpty ? _getTruncatedReview(snapshot.data![index].fields.review) : 'No review available'}\n"
-                        "Author: ${snapshot.data![index].fields.username}"
-                      ),
-                    )
-                    ) 
-                    )
-                  )
-                ),
+                                onLongPress: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.8,
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.04),
+                                                Stack(
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: IconButton(
+                                                        icon: const Icon(
+                                                            Icons.arrow_back),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop(); // Navigate back when the button is pressed
+                                                        },
+                                                      ),
+                                                    ),
+                                                    const Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        'Edit Review',
+                                                        style: TextStyle(
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.04),
+                                                Expanded(
+                                                    child: ReviewEditFormPage(
+                                                        review: snapshot
+                                                            .data![index],
+                                                        onSubmittedReview:
+                                                            refreshItems))
+                                              ],
+                                            )),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: ListTile(
+                                  //
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      30.0, 20.0, 30.0, 20.0),
+                                  textColor: Colors.white,
+                                  trailing: const Icon(Icons.arrow_forward_ios,
+                                      color: Colors.white),
+                                  title: Text(
+                                      "${snapshot.data![index].fields.book}"),
+                                  subtitle: Text(
+                                      "${snapshot.data![index].fields.rate}/10⭐\n"
+                                      "${snapshot.data![index].fields.review != null && snapshot.data![index].fields.review.isNotEmpty ? _getTruncatedReview(snapshot.data![index].fields.review) : 'No review available'}\n"
+                                      "Author: ${snapshot.data![index].fields.username}"),
+                                ))))),
               );
             }
           }
@@ -278,7 +303,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
     );
   }
 
-Future<void> refreshItems() async {
+  Future<void> refreshItems() async {
     setState(() {
       fetchItem();
     });

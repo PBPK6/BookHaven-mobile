@@ -14,7 +14,6 @@ class BookCard extends StatelessWidget {
     final request = context.watch<CookieRequest>();
 
     return Card(
-      elevation: 5,
       margin: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 12,
