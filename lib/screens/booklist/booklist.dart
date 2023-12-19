@@ -1,3 +1,4 @@
+import 'package:bookhaven_mobile/widgets/Booklist_search.dart';
 import 'package:bookhaven_mobile/widgets/left_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -14,10 +15,18 @@ class BooklistPage extends StatefulWidget {
 }
 
 class _BooklistPageState extends State<BooklistPage> {
+  late Future<List<Book>> _futureBookList;
+  late List<Book> _bookList = [];
+
+  @override
+  void initState() {
+    _futureBookList = fetchBook();
+    super.initState();
+  }
+
   Future<List<Book>> fetchBook() async {
-    final request = context.watch<CookieRequest>();
-    final response =
-        await request.get('http://127.0.0.1:8000/get_user_books_flutter/');
+    final request = context.read<CookieRequest>();
+    final response = await request.get('http://127.0.0.1:8000/get_user_books_flutter/');
 
     List<Book> listBook = [];
     for (var d in response) {
@@ -25,11 +34,21 @@ class _BooklistPageState extends State<BooklistPage> {
         listBook.add(Book.fromJson(d));
       }
     }
+    _bookList = listBook; // Store the original book list
     return listBook;
   }
 
   void _refreshList() {
-    setState(() {});
+    setState(() {
+      _futureBookList = fetchBook(); // Refresh the book list
+    });
+  }
+
+  void _filterBooks(String query) {
+    setState(() {
+      _bookList = _bookList.where((book) =>
+          book.fields.title.toLowerCase().contains(query.toLowerCase())).toList();
+    });
   }
 
   @override
@@ -39,11 +58,25 @@ class _BooklistPageState extends State<BooklistPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Booklist'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final String? result = await showSearch<String>(
+                context: context,
+                delegate: BookSearch(_bookList),
+              );
+              if (result != null && result.isNotEmpty) {
+                _filterBooks(result);
+              }
+            },
+            icon: Icon(Icons.search),
+          ),
+        ],
       ),
       drawer: const LeftDrawer(),
       backgroundColor: Color(0xFFFFF0CE),
       body: FutureBuilder(
-        future: fetchBook(),
+        future: _futureBookList,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -51,7 +84,7 @@ class _BooklistPageState extends State<BooklistPage> {
             return Center(
               child: Text('Error: ${snapshot.error}'),
             );
-          } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+          } else if (!snapshot.hasData || _bookList.isEmpty) {
             return const Center(
               child: Text(
                 "No book data available.",
@@ -60,14 +93,14 @@ class _BooklistPageState extends State<BooklistPage> {
             );
           } else {
             return ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: _bookList.length,
               itemBuilder: (_, index) => InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookDetailPage(
-                        book: snapshot.data![index],
+                        book: _bookList[index],
                       ),
                     ),
                   );
@@ -140,6 +173,7 @@ class _BooklistPageState extends State<BooklistPage> {
                     ),
                   ),
                 ),
+
               ),
             );
           }
@@ -148,3 +182,4 @@ class _BooklistPageState extends State<BooklistPage> {
     );
   }
 }
+
