@@ -23,12 +23,10 @@ class BookDetailPage extends StatelessWidget {
             padding: const EdgeInsets.only(top: 10.0),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: maxWidth),
-              // Set the maximum width
               child: Card(
                 color: Color(0xFFFFF0CE),
                 child: ListView(
-                  shrinkWrap:
-                      true, // Allows the ListView to take only the space it needs
+                  shrinkWrap: true,
                   padding: EdgeInsets.all(0),
                   children: [
                     Container(
@@ -63,7 +61,6 @@ class BookDetailPage extends StatelessWidget {
                           Text('${book.fields.author} - ${book.fields.year}'),
                           SizedBox(height: 8),
                           Text('Publisher: ${book.fields.publisher}'),
-                          // Add more details as needed
                         ],
                       ),
                     ),

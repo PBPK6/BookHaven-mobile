@@ -78,7 +78,6 @@ class BookCard extends StatelessWidget {
                     },
                     child: Text('Add'),
                   ),
-                  const SizedBox(height: 4.0),
                 ],
               ),
             ),

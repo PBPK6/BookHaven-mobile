@@ -71,7 +71,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       _openLinkInBrowser(
                           'http://127.0.0.1:8000/admin/main/book/');
                     },
-                    child: Text('Edit'),
+                    child: Text('Manage Books'),
                   ),
                   Expanded(
                     child: _buildBookList(books),
