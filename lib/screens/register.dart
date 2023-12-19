@@ -146,7 +146,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
                         SnackBar(
-                          content: Text('Register failed.'),
+                          content: Text(
+                              'Register failed, Please fix your username or password'),
                         ),
                       );
                   }
