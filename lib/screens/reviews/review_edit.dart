@@ -90,7 +90,7 @@ class _ReviewEditFormPageState extends State<ReviewEditFormPage> {
               ),
             ),
           ),
-           // SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
           SizedBox(height: MediaQuery.of(context).size.height * 0.15,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -167,44 +167,44 @@ class _ReviewEditFormPageState extends State<ReviewEditFormPage> {
                     child: const Text('Delete', style: TextStyle(color:Colors.white)),
                     onPressed: () {
                       showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Are you sure you sure?'),
-                                      content: const Text('This review will be deleted.'),
-                                      actions: [
-                                        TextButton(
-                                          child: const Text('No'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text('Yes'),
-                                          onPressed: () async {
-                                            final response = await request.postJson(
-                        "http://127.0.0.1:8000/delete-flutter-review/${widget.review.pk}",
-                        jsonEncode(<String, String>{}),
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Are you sure you sure?'),
+                          content: const Text('This review will be deleted.'),
+                          actions: [
+                            TextButton(
+                              child: const Text('No'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Yes'),
+                              onPressed: () async {
+                                final response = await request.postJson(
+                                "http://127.0.0.1:8000/delete-flutter-review/${widget.review.pk}",
+                                jsonEncode(<String, String>{}),
+                              );
+                              if (response['status'] == 'success') {
+                                await widget.onSubmittedReview();
+                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Review deleted successfully!"),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Something went wrong, please try again."),
+                                  ),
+                                );
+                              }
+                              },
+                            ),
+                          ],
+                        ),
                       );
-                      if (response['status'] == 'success') {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Review deleted successfully!"),
-                          ),
-                        );
-                        await widget.onSubmittedReview();
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Something went wrong, please try again."),
-                          ),
-                        );
-                      }
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  );
                   },
               ),
               ),

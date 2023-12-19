@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:bookhaven_mobile/screens/login.dart';
-import 'package:bookhaven_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +17,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _newUsernameController;
   late TextEditingController _newEmailController;
   late TextEditingController _newFullnameController;
-  bool _isLoading = true;
 
   @override
   void initState() {
