@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:bookhaven_mobile/screens/login.dart';
-import 'package:bookhaven_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +17,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _newUsernameController;
   late TextEditingController _newEmailController;
   late TextEditingController _newFullnameController;
-  bool _isLoading = true;
 
   @override
   void initState() {
@@ -34,8 +31,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<void> _fetchUserDetails() async {
     String Divider = "------";
     final request = context.read<CookieRequest>();
-    final response =
-        await request.get("http://127.0.0.1:8000/auth/get_user_details/");
+    final response = await request
+        .get("https://bookhaven-k6-tk.pbp.cs.ui.ac.id/auth/get_user_details/");
     print('Response: $response');
     print(Divider);
     String jsonString = json.encode(response);
@@ -121,7 +118,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           String newFullname = _newFullnameController.text;
 
                           final response = await request.postJson(
-                            "http://127.0.0.1:8000/auth/update_username/",
+                            "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/auth/update_username/",
                             jsonEncode(<String, String>{
                               'new_username': newUsername,
                               'new_email': newEmail,

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:bookhaven_mobile/screens/login.dart';
-import 'package:bookhaven_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -123,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   // Navigator.pop(context);
                   final response = await request.postJson(
-                      "http://127.0.0.1:8000/auth/register/",
+                      "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/auth/register/",
                       jsonEncode(<String, String>{
                         'username': username,
                         'fullname': fullname,

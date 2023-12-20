@@ -86,7 +86,7 @@ class LeftDrawer extends StatelessWidget {
               // Implement your logout logic here
               final response = await request.logout(
                   // TODO: Change the URL to your Django app's URL. Don't forget to add the trailing slash (/) if needed.
-                  "http://127.0.0.1:8000/auth/logout/");
+                  "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/auth/logout/");
               String message = response["message"];
               if (response['status']) {
                 String uname = response["username"];

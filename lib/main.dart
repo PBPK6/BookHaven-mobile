@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:bookhaven_mobile/screens/login.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:bookhaven_mobile/screens/start.dart';
 
 void main() {
   runApp(const MyApp());

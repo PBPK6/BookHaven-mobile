@@ -25,7 +25,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> fetchBooks() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/books');
+    var url = Uri.parse('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/api/books');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -142,7 +142,7 @@ class _SearchPageState extends State<SearchPage> {
                               ElevatedButton(
                                 onPressed: () async {
                                   final response = await request.postJson(
-                                      "http://127.0.0.1:8000/add_to_list_fl/",
+                                      "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/add_to_list_fl/",
                                       jsonEncode(<String, dynamic>{
                                         'isbn':
                                             "${displayedBooks[index].fields.isbn}",

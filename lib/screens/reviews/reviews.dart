@@ -16,7 +16,8 @@ class ReviewsPage extends StatefulWidget {
 class _ReviewsPageState extends State<ReviewsPage> {
   Future<List<Review>> fetchItem() async {
     final request = context.read<CookieRequest>();
-    final response = await request.get('http://127.0.0.1:8000/json/');
+    final response =
+        await request.get('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/json/');
 
     List<Review> list_item = [];
     for (var d in response) {
@@ -30,68 +31,67 @@ class _ReviewsPageState extends State<ReviewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
+      appBar: AppBar(
         title: const Text('Reviews'),
       ),
       drawer: const LeftDrawer(),
       backgroundColor: Color(0xFFFFF0CE),
-      floatingActionButton: 
-            FloatingActionButton(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (BuildContext context) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: Padding(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (BuildContext context) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.04),
                         Stack(
                           children: [
                             Align(
                               alignment: Alignment.centerLeft,
-                              child:
-                                IconButton(
-                                  icon: const Icon(Icons.close),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(); // Navigate back when the button is pressed
-                                  },
-                                ),
+                              child: IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Navigate back when the button is pressed
+                                },
                               ),
+                            ),
                             const Align(
                               alignment: Alignment.center,
-                              child:
-                                Text(
-                                  'Write Review',
-                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                ),
+                              child: Text(
+                                'Write Review',
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
                             )
                           ],
                         ),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.04),
                         Expanded(
-                          child:
-                        ReviewFormPage(
-                          onReviewSubmitted: refreshItems,
-                        ),
+                          child: ReviewFormPage(
+                            onReviewSubmitted: refreshItems,
+                          ),
                         )
                       ],
-                    )
-                  ),
-                );
-              },
-            );
-          },
-            ),
+                    )),
+              );
+            },
+          );
+        },
+      ),
       body: FutureBuilder(
         future: fetchItem(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -112,45 +112,43 @@ class _ReviewsPageState extends State<ReviewsPage> {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) => InkWell(
-                      onTap:() {
-                        Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ReviewDetailPage(review: snapshot.data![index], onSubmittedReview: refreshItems),
-                              ),
-                            );
-                      },
-                      child: Card(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReviewDetailPage(
+                              review: snapshot.data![index],
+                              onSubmittedReview: refreshItems),
+                        ),
+                      );
+                    },
+                    child: Card(
                         elevation: 5,
                         margin: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${snapshot.data![index].fields.book}"
-                                      ),
-                                    Text(
-                                      "${snapshot.data![index].fields.rate}/10⭐\n"
-                                      "${snapshot.data![index].fields.review != null && snapshot.data![index].fields.review.isNotEmpty ? _getTruncatedReview(snapshot.data![index].fields.review) : 'No review available'}\n"
-                                      "Author: ${snapshot.data![index].fields.username}"
-                                    ),
-                                  ],
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "${snapshot.data![index].fields.book}"),
+                                      Text(
+                                          "${snapshot.data![index].fields.rate}/10⭐\n"
+                                          "${snapshot.data![index].fields.review != null && snapshot.data![index].fields.review.isNotEmpty ? _getTruncatedReview(snapshot.data![index].fields.review) : 'No review available'}\n"
+                                          "Author: ${snapshot.data![index].fields.username}"),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Icon(Icons.arrow_forward_ios)
-                            ],
-                          )
-                        )
-                  )
-                ),
+                                const Icon(Icons.arrow_forward_ios)
+                              ],
+                            )))),
               );
             }
           }
@@ -159,7 +157,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
     );
   }
 
-Future<void> refreshItems() async {
+  Future<void> refreshItems() async {
     setState(() {
       fetchItem();
     });

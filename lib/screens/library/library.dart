@@ -3,11 +3,14 @@ import 'package:bookhaven_mobile/widgets/left_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'package:bookhaven_mobile/models/Book.dart';
 import 'package:bookhaven_mobile/screens/library/book_detail_page.dart';
 import 'package:bookhaven_mobile/widgets/book_card.dart';
+
+final Uri _url =
+    Uri.parse('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/admin/main/book/');
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({Key? key}) : super(key: key);
@@ -18,7 +21,7 @@ class LibraryPage extends StatefulWidget {
 
 class _LibraryPageState extends State<LibraryPage> {
   Future<List<Book>> fetchBook() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/books');
+    var url = Uri.parse('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/api/books');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -37,7 +40,8 @@ class _LibraryPageState extends State<LibraryPage> {
 
   Future<bool> isAdmin() async {
     final request = context.watch<CookieRequest>();
-    final response = await request.get('http://127.0.0.1:8000/check_su/');
+    final response =
+        await request.get('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/check_su/');
     return response['is_superuser'];
   }
 
@@ -67,10 +71,7 @@ class _LibraryPageState extends State<LibraryPage> {
               return Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      _openLinkInBrowser(
-                          'http://127.0.0.1:8000/admin/main/book/');
-                    },
+                    onPressed: _launchUrl,
                     child: Text('Manage Books'),
                   ),
                   Expanded(
@@ -85,6 +86,12 @@ class _LibraryPageState extends State<LibraryPage> {
         },
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 
   Widget _buildBookList(List<Book> books) {
@@ -113,9 +120,5 @@ class _LibraryPageState extends State<LibraryPage> {
         child: BookCard(books[index]),
       ),
     );
-  }
-
-  void _openLinkInBrowser(String url) {
-    html.window.open(url, 'new_tab');
   }
 }
