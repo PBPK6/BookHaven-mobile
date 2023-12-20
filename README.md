@@ -1,4 +1,9 @@
 # 📖 Book Haven (mobile)
+[![Build status](https://build.appcenter.ms/v0.1/apps/f804c684-681b-4564-bcb4-5f456e55d225/branches/master/badge)](https://appcenter.ms)
+[![release](https://github.com/PBPK6/BookHaven-mobile/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/PBPK6/BookHaven-mobile/actions)
+
+[public release]: https://install.appcenter.ms/orgs/bookhaven/apps/bookhaven/distribution_groups/public
+
 
 ## 👨‍💻Group members
 
