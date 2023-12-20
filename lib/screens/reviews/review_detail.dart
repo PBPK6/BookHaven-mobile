@@ -16,13 +16,15 @@ class ReviewDetailPage extends StatelessWidget {
 
   Future<bool> isAdmin(BuildContext context) async {
     final request = context.read<CookieRequest>();
-    final response = await request.get('http://127.0.0.1:8000/check_su/');
+    final response =
+        await request.get('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/check_su/');
     return response['is_superuser'];
   }
 
   Future<bool> isAuthor(BuildContext context) async {
     final request = context.read<CookieRequest>();
-    final response = await request.get('http://127.0.0.1:8000/get_username/');
+    final response = await request
+        .get('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/get_username/');
     return (response['username'] == review.fields.username);
   }
 
@@ -66,7 +68,10 @@ class ReviewDetailPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.04),
                                     Stack(
                                       children: [
                                         Align(
@@ -82,15 +87,22 @@ class ReviewDetailPage extends StatelessWidget {
                                           alignment: Alignment.center,
                                           child: Text(
                                             'Edit Review',
-                                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.04),
                                     Expanded(
-                                      child: ReviewEditFormPage(review: review, onSubmittedReview: onSubmittedReview),
+                                      child: ReviewEditFormPage(
+                                          review: review,
+                                          onSubmittedReview: onSubmittedReview),
                                     ),
                                   ],
                                 ),
@@ -104,7 +116,8 @@ class ReviewDetailPage extends StatelessWidget {
                 ),
                 Text(
                   '${review.fields.book}',
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

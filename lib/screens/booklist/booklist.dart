@@ -26,7 +26,8 @@ class _BooklistPageState extends State<BooklistPage> {
 
   Future<List<Book>> fetchBook() async {
     final request = context.read<CookieRequest>();
-    final response = await request.get('http://127.0.0.1:8000/get_user_books_flutter/');
+    final response = await request
+        .get('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/get_user_books_flutter/');
 
     List<Book> listBook = [];
     for (var d in response) {
@@ -46,8 +47,10 @@ class _BooklistPageState extends State<BooklistPage> {
 
   void _filterBooks(String query) {
     setState(() {
-      _bookList = _bookList.where((book) =>
-          book.fields.title.toLowerCase().contains(query.toLowerCase())).toList();
+      _bookList = _bookList
+          .where((book) =>
+              book.fields.title.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
@@ -146,7 +149,7 @@ class _BooklistPageState extends State<BooklistPage> {
                         ElevatedButton(
                           onPressed: () async {
                             final response = await request.postJson(
-                              "http://127.0.0.1:8000/del_from_list_fl/",
+                              "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/del_from_list_fl/",
                               jsonEncode(<String, dynamic>{
                                 'isbn': "${snapshot.data![index].fields.isbn}",
                               }),
@@ -173,7 +176,6 @@ class _BooklistPageState extends State<BooklistPage> {
                     ),
                   ),
                 ),
-
               ),
             );
           }
@@ -182,4 +184,3 @@ class _BooklistPageState extends State<BooklistPage> {
     );
   }
 }
-

@@ -6,7 +6,8 @@ import 'dart:convert';
 class ReviewFormPage extends StatefulWidget {
   final Function onReviewSubmitted;
 
-  const ReviewFormPage({Key? key, required this.onReviewSubmitted}) : super(key: key);
+  const ReviewFormPage({Key? key, required this.onReviewSubmitted})
+      : super(key: key);
 
   @override
   State<ReviewFormPage> createState() => _ReviewFormPageState();
@@ -28,93 +29,93 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.15,
-            child: 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Book Name",
-                  labelText: "Book Name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Book Name",
+                    labelText: "Book Name",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _book = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Name cannot be empty!";
+                    }
+                    return null;
+                  },
                 ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _book = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Name cannot be empty!";
-                  }
-                  return null;
-                },
               ),
-            ),
             ),
 
-            SizedBox(height: MediaQuery.of(context).size.height * 0.15,
-            child: 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Rating",
-                  labelText: "Rating",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Rating",
+                    labelText: "Rating",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _rate = int.parse(value!);
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Rating cannot be empty!";
+                    }
+                    if (int.tryParse(value) == null) {
+                      return "Rating must be a number!";
+                    }
+                    if (_rate > 10) {
+                      return "Rating cannot be greater than ten!";
+                    }
+                    return null;
+                  },
                 ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _rate = int.parse(value!);
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Rating cannot be empty!";
-                  }
-                  if (int.tryParse(value) == null) {
-                    return "Rating must be a number!";
-                  }
-                  if (_rate > 10) {
-                    return "Rating cannot be greater than ten!";
-                  }
-                  return null;
-                },
               ),
             ),
-          ),
-           // SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.15,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Review",
-                  labelText: "Review",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+            // SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Review",
+                    labelText: "Review",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _review = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Review cannot be empty!";
+                    }
+                    return null;
+                  },
                 ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _review = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Review cannot be empty!";
-                  }
-                  return null;
-                },
               ),
             ),
-          ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
             Align(
               alignment: Alignment.bottomCenter,
@@ -127,7 +128,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       final response = await request.postJson(
-                        "http://127.0.0.1:8000/create-flutter-review/",
+                        "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/create-flutter-review/",
                         jsonEncode(<String, String>{
                           'book': _book,
                           'rate': _rate.toString(),
@@ -146,7 +147,8 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Something went wrong, please try again."),
+                            content:
+                                Text("Something went wrong, please try again."),
                           ),
                         );
                       }

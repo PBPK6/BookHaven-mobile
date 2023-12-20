@@ -18,7 +18,7 @@ class LibraryPage extends StatefulWidget {
 
 class _LibraryPageState extends State<LibraryPage> {
   Future<List<Book>> fetchBook() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/books');
+    var url = Uri.parse('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/api/books');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
@@ -37,7 +37,8 @@ class _LibraryPageState extends State<LibraryPage> {
 
   Future<bool> isAdmin() async {
     final request = context.watch<CookieRequest>();
-    final response = await request.get('http://127.0.0.1:8000/check_su/');
+    final response =
+        await request.get('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/check_su/');
     return response['is_superuser'];
   }
 
@@ -69,7 +70,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   ElevatedButton(
                     onPressed: () {
                       _openLinkInBrowser(
-                          'http://127.0.0.1:8000/admin/main/book/');
+                          'https://bookhaven-k6-tk.pbp.cs.ui.ac.id/admin/main/book/');
                     },
                     child: Text('Manage Books'),
                   ),

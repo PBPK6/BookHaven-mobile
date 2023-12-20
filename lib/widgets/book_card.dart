@@ -58,7 +58,7 @@ class BookCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       final response = await request.postJson(
-                        "http://127.0.0.1:8000/add_to_list_fl/",
+                        "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/add_to_list_fl/",
                         jsonEncode(<String, dynamic>{
                           'isbn': "${book.fields.isbn}",
                         }),

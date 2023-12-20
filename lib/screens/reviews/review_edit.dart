@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:bookhaven_mobile/models/review.dart';
 
-
 class ReviewEditFormPage extends StatefulWidget {
   final Future<void> Function() onSubmittedReview;
 
-  const ReviewEditFormPage({Key? key, required this.review, required this.onSubmittedReview}) : super(key: key);
+  const ReviewEditFormPage(
+      {Key? key, required this.review, required this.onSubmittedReview})
+      : super(key: key);
   final Review review;
 
   @override
@@ -31,140 +32,143 @@ class _ReviewEditFormPageState extends State<ReviewEditFormPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.15,
-            child: 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Book Name",
-                  labelText: "Book Name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Book Name",
+                    labelText: "Book Name",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _book = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Name cannot be empty!";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            ),
-
-            SizedBox(height: MediaQuery.of(context).size.height * 0.15,
-            child: 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Rating",
-                  labelText: "Rating",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _rate = int.parse(value!);
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Rating cannot be empty!";
-                  }
-                  if (int.tryParse(value) == null) {
-                    return "Rating must be a number!";
-                  }
-                  if (_rate > 10) {
-                    return "Rating cannot be greater than ten!";
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ),
-
-          SizedBox(height: MediaQuery.of(context).size.height * 0.15,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Review",
-                  labelText: "Review",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    _review = value!;
-                  });
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Review cannot be empty!";
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04
-            ),
-
-            Stack(
-                  children: [
-                Align(alignment: Alignment.centerRight, child:
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
-                  ),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      final response = await request.postJson(
-                        "http://127.0.0.1:8000/edit-flutter-review/${widget.review.pk}",
-                        jsonEncode(<String, String>{
-                          'book': _book,
-                          'rate': _rate.toString(),
-                          'review': _review,
-                          'date': _dateAdded.toString(),
-                        }),
-                      );
-                      if (response['status'] == 'success') {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Review edited successfully!"),
-                          ),
-                        );
-                        await widget.onSubmittedReview();
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Something went wrong, please try again."),
-                          ),
-                        );
-                      }
-                    }
+                  onChanged: (String? value) {
+                    setState(() {
+                      _book = value!;
+                    });
                   },
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Name cannot be empty!";
+                    }
+                    return null;
+                  },
                 ),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Rating",
+                    labelText: "Rating",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _rate = int.parse(value!);
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Rating cannot be empty!";
+                    }
+                    if (int.tryParse(value) == null) {
+                      return "Rating must be a number!";
+                    }
+                    if (_rate > 10) {
+                      return "Rating cannot be greater than ten!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Review",
+                    labelText: "Review",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _review = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Review cannot be empty!";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        final response = await request.postJson(
+                          "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/edit-flutter-review/${widget.review.pk}",
+                          jsonEncode(<String, String>{
+                            'book': _book,
+                            'rate': _rate.toString(),
+                            'review': _review,
+                            'date': _dateAdded.toString(),
+                          }),
+                        );
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Review edited successfully!"),
+                            ),
+                          );
+                          await widget.onSubmittedReview();
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  "Something went wrong, please try again."),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: const Text(
+                      "Save",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
                 Align(
-                  alignment: Alignment.centerLeft, 
+                  alignment: Alignment.centerLeft,
                   child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
-                    child: const Text('Delete', style: TextStyle(color:Colors.white)),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red)),
+                    child: const Text('Delete',
+                        style: TextStyle(color: Colors.white)),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -182,33 +186,36 @@ class _ReviewEditFormPageState extends State<ReviewEditFormPage> {
                               child: const Text('Yes'),
                               onPressed: () async {
                                 final response = await request.postJson(
-                                "http://127.0.0.1:8000/delete-flutter-review/${widget.review.pk}",
-                                jsonEncode(<String, String>{}),
-                              );
-                              if (response['status'] == 'success') {
-                                await widget.onSubmittedReview();
-                                Navigator.of(context).popUntil((route) => route.isFirst);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Review deleted successfully!"),
-                                  ),
+                                  "https://bookhaven-k6-tk.pbp.cs.ui.ac.id/delete-flutter-review/${widget.review.pk}",
+                                  jsonEncode(<String, String>{}),
                                 );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Something went wrong, please try again."),
-                                  ),
-                                );
-                              }
+                                if (response['status'] == 'success') {
+                                  await widget.onSubmittedReview();
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text("Review deleted successfully!"),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "Something went wrong, please try again."),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ],
                         ),
                       );
-                  },
-              ),
-              ),
-                ],
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),
