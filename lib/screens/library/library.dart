@@ -9,6 +9,9 @@ import 'package:bookhaven_mobile/models/Book.dart';
 import 'package:bookhaven_mobile/screens/library/book_detail_page.dart';
 import 'package:bookhaven_mobile/widgets/book_card.dart';
 
+final Uri _url =
+    Uri.parse('https://bookhaven-k6-tk.pbp.cs.ui.ac.id/admin/main/book/');
+
 class LibraryPage extends StatefulWidget {
   const LibraryPage({Key? key}) : super(key: key);
 
@@ -68,9 +71,7 @@ class _LibraryPageState extends State<LibraryPage> {
               return Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      _launchManageBooksURL();
-                    },
+                    onPressed: _launchUrl,
                     child: Text('Manage Books'),
                   ),
                   Expanded(
@@ -87,12 +88,9 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-  void _launchManageBooksURL() async {
-    const url = 'https://bookhaven-k6-tk.pbp.cs.ui.ac.id/admin/main/book/';
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Could not launch $url';
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
     }
   }
 
