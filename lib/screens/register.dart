@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             color: Color(0xFFFFC436),
           ),
-          height: MediaQuery.of(context).size.height / 3,
+          height: MediaQuery.of(context).size.height / 5,
           width: MediaQuery.of(context).size.width,
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.end,
