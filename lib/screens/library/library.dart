@@ -3,7 +3,7 @@ import 'package:bookhaven_mobile/widgets/left_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'package:bookhaven_mobile/models/Book.dart';
 import 'package:bookhaven_mobile/screens/library/book_detail_page.dart';
@@ -69,8 +69,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _openLinkInBrowser(
-                          'https://bookhaven-k6-tk.pbp.cs.ui.ac.id/admin/main/book/');
+                      _launchManageBooksURL();
                     },
                     child: Text('Manage Books'),
                   ),
@@ -86,6 +85,15 @@ class _LibraryPageState extends State<LibraryPage> {
         },
       ),
     );
+  }
+
+  void _launchManageBooksURL() async {
+    const url = 'https://bookhaven-k6-tk.pbp.cs.ui.ac.id/admin/main/book/';
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget _buildBookList(List<Book> books) {
@@ -114,9 +122,5 @@ class _LibraryPageState extends State<LibraryPage> {
         child: BookCard(books[index]),
       ),
     );
-  }
-
-  void _openLinkInBrowser(String url) {
-    html.window.open(url, 'new_tab');
   }
 }
