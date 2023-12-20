@@ -4,6 +4,7 @@
 
 [public release]: https://install.appcenter.ms/orgs/bookhaven/apps/bookhaven/distribution_groups/public
 
+[public release]
 
 ## 👨‍💻Group members
 
